@@ -1,6 +1,6 @@
 # 02 · 容灾线路：Xray VLESS + REALITY (TCP 443)
 
-> 目标：第二台 VPS（建议与主力**不同地域**，做线路对照/容灾）跑 Xray VLESS+REALITY Vision，TCP 443 以 `www.bing.com` 为伪装目标，公网直出。
+> 目标：部署 Xray VLESS+REALITY Vision，TCP 443 以 `www.bing.com` 为伪装目标，公网直出。**默认与 WireGuard 同机部署**（一台 VPS 跑全部协议，端口互不冲突）；也可放第二台不同地域的 VPS 做地域级容灾——部署步骤完全相同。
 > 执行 runbook 见 [AGENT_RUNBOOK.md](../AGENT_RUNBOOK.md) §5；本文讲原理、选型与防误诊。
 > **版本纪律：锁定 v25.3.31，不自动升级。**
 

@@ -1,5 +1,6 @@
 # Clash Verge (mihomo) 节点片段模板 — 粘进订阅 profile 的 Merge/增强配置（append.proxies）
 # 按实际部署的线路取用；字段含义见 docs/04-clash-verge-client.md §3
+# <VPS2_IP> = REALITY/HY2 所在服务器的公网 IP（单机部署时与 WG 同一台，即 <VPS_IP>）
 # 格式说明：Verge Merge 文件用 prepend/append 结构，本模板给出 append 部分
 
 prepend: []
