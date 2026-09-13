@@ -1,0 +1,9 @@
+# 本仓库只含文档与占位符模板，理论不应出现真实凭据——以防万一
+*.pem
+*.key
+*.conf
+!examples/*.example
+!examples/clash/*.example
+*.env
+*.local.yaml
+secret*

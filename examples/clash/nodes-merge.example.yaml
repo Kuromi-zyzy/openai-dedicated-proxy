@@ -1,0 +1,59 @@
+# Clash Verge (mihomo) 节点片段模板 — 粘进订阅 profile 的 Merge/增强配置（append.proxies）
+# 按实际部署的线路取用；字段含义见 docs/04-clash-verge-client.md §3
+# 格式说明：Verge Merge 文件用 prepend/append 结构，本模板给出 append 部分
+
+prepend: []
+
+append:
+  # ── 档位 A：mihomo 用户态 WG（开箱即用，推荐保留）──
+  - name: VPS-WG
+    type: wireguard
+    server: <VPS_IP>
+    port: 52800
+    ip: 10.66.66.2            # 客户端在隧道内的地址
+    private-key: <WG_CLIENT_PRIVATE_KEY>
+    public-key: <WG_SERVER_PUBLIC_KEY>
+    udp: true
+    mtu: 1380
+    persistent-keepalive: 25
+    remote-dns-resolve: true
+    dns: [1.1.1.1]
+
+  # ── 档位 A（接法 B）：Windows 内核态 WG 就绪后启用——server 是隧道内地址 ──
+  # - name: VPS-WG-SOCKS
+  #   type: socks5
+  #   server: 10.66.66.1
+  #   port: 1080
+  #   username: wgproxy
+  #   password: <SOCKS_PASSWORD>
+  #   udp: false
+
+  # ── 档位 B：Xray REALITY ──
+  # - name: VPS-REALITY
+  #   type: vless
+  #   server: <VPS2_IP>
+  #   port: 443
+  #   uuid: <XRAY_UUID>
+  #   tls: true
+  #   flow: xtls-rprx-vision
+  #   servername: www.bing.com
+  #   client-fingerprint: chrome
+  #   reality-opts:
+  #     public-key: <XRAY_PUBLIC_KEY>
+  #     short-id: <XRAY_SHORT_ID>
+  #   network: tcp
+  #   udp: false
+
+  # ── 档位 C：Hysteria2 ──
+  # - name: VPS-HY2
+  #   type: hysteria2
+  #   server: <VPS2_IP>
+  #   port: 443
+  #   password: <HY2_PASSWORD>
+  #   sni: www.bing.com
+  #   fingerprint: <HY2_CERT_SHA256>   # openssl x509 -noout -fingerprint -sha256 的输出，去前缀
+  #   up: 30
+  #   down: 100
+  #   udp: false
+
+delete: []

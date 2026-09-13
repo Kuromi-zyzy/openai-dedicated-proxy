@@ -1,0 +1,57 @@
+// /usr/local/etc/xray/config.json — Xray VLESS+REALITY 服务端模板（JSONC 带注释，部署时去掉注释行）
+// 版本锁 v25.3.31；部署见 AGENT_RUNBOOK.md §5；权限 root:xray 640
+// ⚠️ target 用 www.bing.com，禁用 www.microsoft.com（OCSP 大证书致认证全灭，见 docs/05 坑 5）
+
+{
+  "log": {
+    "access": "/var/log/xray/access.log",
+    "error": "/var/log/xray/error.log",
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "tag": "reality-vision",
+      "listen": "::",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          { "id": "<XRAY_UUID>", "flow": "xtls-rprx-vision" }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "method": "raw",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "target": "www.bing.com:443",
+          "serverNames": ["www.bing.com"],
+          "privateKey": "<XRAY_PRIVATE_KEY>",
+          "shortIds": ["<XRAY_SHORT_ID>"]
+        }
+      },
+      "sniffing": { "enabled": true, "destOverride": ["http", "tls", "quic"], "metadataOnly": false }
+    }
+  ],
+  "outbounds": [
+    { "tag": "direct", "protocol": "freedom", "settings": {} },
+    { "tag": "block", "protocol": "blackhole", "settings": {} }
+  ],
+  "routing": {
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {
+        // 安全硬要求：block 云元数据（IMDS）+ 全部私网段（见 docs/02 §4）
+        "type": "field",
+        "ip": [
+          "169.254.169.254/32",
+          "0.0.0.0/8", "10.0.0.0/8", "100.64.0.0/10", "127.0.0.0/8",
+          "169.254.0.0/16", "172.16.0.0/12", "192.168.0.0/16",
+          "::1/128", "fc00::/7", "fe80::/10"
+        ],
+        "outboundTag": "block"
+      }
+    ]
+  }
+}

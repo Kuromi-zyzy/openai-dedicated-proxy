@@ -1,0 +1,24 @@
+# Clash Verge (mihomo) 组 + 规则片段模板 — 粘进订阅 profile 的 Merge/增强配置
+# 组：手动 select，禁止 url-test/load-balance/fallback（长连接不允许节点漂移，见 docs/04 §2）
+# 规则：五条 DOMAIN-SUFFIX 必须置于 rules 最顶部（Verge Merge 用 prepend-rules 实现）
+
+prepend: []
+
+append:
+  - name: OpenAI
+    type: select
+    proxies:
+      - VPS-WG-SOCKS        # 按实际部署增删成员；最稳的放第一位（默认选中）
+      - VPS-WG
+      # - VPS-REALITY
+      # - VPS-HY2
+
+# ── 分流规则（若 Verge 版本支持 prepend-rules 字段则如下；否则在 Script 增强里 unshift）──
+# prepend-rules:
+#   - DOMAIN-SUFFIX,openai.com,OpenAI
+#   - DOMAIN-SUFFIX,chatgpt.com,OpenAI
+#   - DOMAIN-SUFFIX,oaistatic.com,OpenAI
+#   - DOMAIN-SUFFIX,oaiusercontent.com,OpenAI
+#   - DOMAIN-SUFFIX,oaistudio.com,OpenAI
+
+delete: []

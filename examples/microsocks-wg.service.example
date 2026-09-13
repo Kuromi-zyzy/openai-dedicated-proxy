@@ -1,0 +1,20 @@
+# /etc/systemd/system/microsocks-wg.service
+# SOCKS5 仅监听 WG 隧道内网 10.66.66.1:1080 —— 供 Windows 内核态 WG 客户端作为出口
+# 部署见 AGENT_RUNBOOK.md §4.7；安全边界见 docs/01-wireguard-socks.md §4
+
+[Unit]
+Description=microsocks SOCKS5 on WireGuard tunnel (10.66.66.1:1080)
+After=network-online.target wg-quick@wg0.service
+Wants=wg-quick@wg0.service
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/microsocks-wg.env
+ExecStart=/bin/sh -c 'exec /usr/bin/microsocks -i 10.66.66.1 -p 1080 -u wgproxy -P "$MSPASS"'
+Restart=always
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
